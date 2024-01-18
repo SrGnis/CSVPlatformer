@@ -1,0 +1,49 @@
+---
+title: CSVPlatformer Structure
+---
+classDiagram
+    class CSVPlatformer {
+        -Level level
+        -Player player
+        -setLevel(Level level)
+        -resetPlayer()
+    }
+    class Config {
+        +float INIT_PLATFORM_DEEP
+        +float INIT_PLATFORM_Z
+        +float CELL_DIM_X
+        +float CELL_DIM_Z
+        +float MOV_SPEED
+        +float JUMP_SPEED
+        +float JUMP_TIME
+        +float GRAVITY
+    }
+    class LevelLoader {
+        <<interface>>
+        +loadLevel(String source) Level
+    }
+    class CSVLoader
+    class Level {
+        -Platform initialPlatform
+        -Platform[] platforms
+        +getStartPoint() Vector3f
+    }
+    class Player {
+        -Geometry playerGeom
+        -playerControl
+        +moveTo(Vector3f position)
+    }
+    class Platform {
+        <<abstract>>
+    }
+    class SimplePlatform
+
+    CSVPlatformer "1" *-- "1" Config
+    CSVPlatformer "1" *-- "1" LevelLoader
+    LevelLoader <|.. CSVLoader
+    CSVPlatformer "1" *-- "1" Level
+    CSVPlatformer "1" *-- "1" Player
+    Level "1" *-- "1" Platform: initial platform
+    Level "1" *-- "0..*" Platform: level platforms
+    Platform <|.. SimplePlatform
+

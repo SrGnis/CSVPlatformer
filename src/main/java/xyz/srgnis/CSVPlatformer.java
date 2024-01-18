@@ -1,43 +1,87 @@
 package xyz.srgnis;
 
+import com.jme3.app.ChaseCameraAppState;
+import com.jme3.app.DebugKeysAppState;
 import com.jme3.app.SimpleApplication;
-import com.jme3.material.Material;
-import com.jme3.math.ColorRGBA;
-import com.jme3.renderer.RenderManager;
-import com.jme3.scene.Geometry;
-import com.jme3.scene.shape.Box;
+import com.jme3.app.StatsAppState;
+import com.jme3.app.state.ConstantVerifierState;
+import com.jme3.audio.AudioListenerState;
+import com.jme3.bullet.BulletAppState;
+import com.jme3.bullet.PhysicsSpace;
+import com.jme3.system.AppSettings;
+import xyz.srgnis.appstate.LevelState;
+import xyz.srgnis.appstate.LightingState;
+import xyz.srgnis.appstate.PlayerState;
+import xyz.srgnis.level.Level;
+import xyz.srgnis.player.Player;
 
 /**
  * This is the Main Class of your Game. It should boot up your game and do initial initialisation
  * Move your Logic into AppStates or Controls or other java classes
  */
 public class CSVPlatformer extends SimpleApplication {
+    public static final CSVPlatformer INSTANCE = new CSVPlatformer();
+
+    private PhysicsSpace physicsSpace;
+
+    public CSVPlatformer() {
+        super(
+                new StatsAppState(),
+                new AudioListenerState(),
+                new DebugKeysAppState(),
+                new ConstantVerifierState(),
+                new ChaseCameraAppState(), // TODO: extend/implement our own
+                new LightingState()
+        );
+    }
 
     public static void main(String[] args) {
-        CSVPlatformer app = new CSVPlatformer();
-        app.setShowSettings(false); //Settings dialog not supported on mac
-        app.start();
+        INSTANCE.setShowSettings(true); //Settings dialog not supported on mac
+
+        AppSettings settings = new AppSettings(true);
+        settings.setGammaCorrection(true);
+        INSTANCE.setSettings(settings);
+
+        INSTANCE.start();
     }
 
     @Override
     public void simpleInitApp() {
-        Box b = new Box(1, 1, 1);
-        Geometry geom = new Geometry("Box", b);
+        //Load default Materials
+        Materials.RED_MATERIAL = Utils.createLitMaterial(assetManager, 0.5f, 0, 0);
+        Materials.GREEN_MATERIAL = Utils.createLitMaterial(assetManager, 0, 0.5f, 0);
 
-        Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
-        mat.setColor("Color", ColorRGBA.Blue);
-        geom.setMaterial(mat);
+        //Initial Camera setup TODO: this should be done in the appState
+        ChaseCameraAppState chaseCameraAppState = stateManager.getState(ChaseCameraAppState.class);
+        chaseCameraAppState.setDragToRotate(false);
+        chaseCameraAppState.setTarget(rootNode);
 
-        rootNode.attachChild(geom);
+        BulletAppState bulletAppState = new BulletAppState();
+        getStateManager().attach(bulletAppState);
+        bulletAppState.setDebugEnabled(true); // for debug visualization
+        physicsSpace = bulletAppState.getPhysicsSpace();
+        stateManager.attach(new PlayerState());
+        stateManager.attach(new LevelState());
+
     }
 
-    @Override
-    public void simpleUpdate(float tpf) {
-        //this method will be called every game tick and can be used to make updates
+    public Player getPlayer() {
+        return this.stateManager.getState(PlayerState.class).getPlayer();
     }
 
-    @Override
-    public void simpleRender(RenderManager rm) {
-        //add render code here (if any)
+    public void setPlayer(Player player) {
+        rootNode.attachChild(player.getPlayerGeometry());
+        physicsSpace.add(player.getPlayerControl());
+
+        ChaseCameraAppState chaseCameraAppState = stateManager.getState(ChaseCameraAppState.class);
+        chaseCameraAppState.setTarget(player.getPlayerGeometry());
+    }
+
+    public Level getLevel() {
+        return this.stateManager.getState(LevelState.class).getLevel();
+    }
+
+    public PhysicsSpace getPhysicsSpace() {
+        return physicsSpace;
     }
 }
