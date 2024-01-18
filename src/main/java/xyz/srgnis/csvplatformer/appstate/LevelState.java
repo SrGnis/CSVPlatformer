@@ -1,4 +1,4 @@
-package xyz.srgnis.appstate;
+package xyz.srgnis.csvplatformer.appstate;
 
 import com.jme3.app.Application;
 import com.jme3.app.state.BaseAppState;
@@ -6,10 +6,10 @@ import com.jme3.input.InputManager;
 import com.jme3.input.KeyInput;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.KeyTrigger;
-import xyz.srgnis.CSVPlatformer;
-import xyz.srgnis.level.Level;
-import xyz.srgnis.level.loader.LevelLoader;
-import xyz.srgnis.level.loader.RandLoader;
+import xyz.srgnis.csvplatformer.CSVPlatformer;
+import xyz.srgnis.csvplatformer.level.Level;
+import xyz.srgnis.csvplatformer.level.loader.LevelLoader;
+import xyz.srgnis.csvplatformer.level.loader.RandLoader;
 
 public class LevelState extends BaseAppState implements ActionListener {
 

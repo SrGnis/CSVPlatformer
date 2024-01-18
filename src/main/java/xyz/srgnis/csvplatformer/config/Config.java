@@ -1,4 +1,4 @@
-package xyz.srgnis.config;
+package xyz.srgnis.csvplatformer.config;
 
 public class Config {
     public static final float INIT_PLATFORM_DEEP = 10f;

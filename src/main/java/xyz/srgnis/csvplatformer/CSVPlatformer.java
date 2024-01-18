@@ -1,4 +1,4 @@
-package xyz.srgnis;
+package xyz.srgnis.csvplatformer;
 
 import com.jme3.app.ChaseCameraAppState;
 import com.jme3.app.DebugKeysAppState;
@@ -9,11 +9,11 @@ import com.jme3.audio.AudioListenerState;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.system.AppSettings;
-import xyz.srgnis.appstate.LevelState;
-import xyz.srgnis.appstate.LightingState;
-import xyz.srgnis.appstate.PlayerState;
-import xyz.srgnis.level.Level;
-import xyz.srgnis.player.Player;
+import xyz.srgnis.csvplatformer.appstate.LevelState;
+import xyz.srgnis.csvplatformer.appstate.LightingState;
+import xyz.srgnis.csvplatformer.appstate.PlayerState;
+import xyz.srgnis.csvplatformer.level.Level;
+import xyz.srgnis.csvplatformer.player.Player;
 
 /**
  * This is the Main Class of your Game. It should boot up your game and do initial initialisation

@@ -1,4 +1,4 @@
-package xyz.srgnis;
+package xyz.srgnis.csvplatformer;
 
 import com.jme3.material.Material;
 

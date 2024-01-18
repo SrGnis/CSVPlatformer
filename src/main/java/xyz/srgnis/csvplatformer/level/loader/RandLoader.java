@@ -1,11 +1,11 @@
-package xyz.srgnis.level.loader;
+package xyz.srgnis.csvplatformer.level.loader;
 
 import com.jme3.math.FastMath;
 import org.jetbrains.annotations.Nullable;
-import xyz.srgnis.CSVPlatformer;
-import xyz.srgnis.config.Config;
-import xyz.srgnis.level.Level;
-import xyz.srgnis.level.platform.SimplePlatform;
+import xyz.srgnis.csvplatformer.CSVPlatformer;
+import xyz.srgnis.csvplatformer.config.Config;
+import xyz.srgnis.csvplatformer.level.Level;
+import xyz.srgnis.csvplatformer.level.platform.SimplePlatform;
 
 public class RandLoader implements LevelLoader {
 

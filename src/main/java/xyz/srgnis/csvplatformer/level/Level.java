@@ -1,4 +1,4 @@
-package xyz.srgnis.level;
+package xyz.srgnis.csvplatformer.level;
 
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.collision.shapes.PlaneCollisionShape;
@@ -8,13 +8,13 @@ import com.jme3.math.Plane;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import com.jme3.scene.shape.Box;
-import xyz.srgnis.CSVPlatformer;
-import xyz.srgnis.Materials;
-import xyz.srgnis.config.Config;
-import xyz.srgnis.level.platform.Platform;
-import xyz.srgnis.level.platform.SimplePlatform;
-import xyz.srgnis.physicstrigger.PhysicsTrigger;
-import xyz.srgnis.physicstrigger.RestartPlaneTouched;
+import xyz.srgnis.csvplatformer.CSVPlatformer;
+import xyz.srgnis.csvplatformer.Materials;
+import xyz.srgnis.csvplatformer.config.Config;
+import xyz.srgnis.csvplatformer.level.platform.Platform;
+import xyz.srgnis.csvplatformer.level.platform.SimplePlatform;
+import xyz.srgnis.csvplatformer.lib.physicstrigger.PhysicsTrigger;
+import xyz.srgnis.csvplatformer.lib.physicstrigger.RestartPlaneTouched;
 
 import java.util.HashSet;
 

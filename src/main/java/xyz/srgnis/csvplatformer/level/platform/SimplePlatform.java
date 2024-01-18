@@ -1,11 +1,11 @@
-package xyz.srgnis.level.platform;
+package xyz.srgnis.csvplatformer.level.platform;
 
 import com.jme3.material.Material;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Mesh;
 import com.jme3.scene.shape.Box;
-import xyz.srgnis.Materials;
-import xyz.srgnis.config.Config;
+import xyz.srgnis.csvplatformer.Materials;
+import xyz.srgnis.csvplatformer.config.Config;
 
 public class SimplePlatform extends Platform {
     private static Mesh defaultMesh = new Box(Config.CELL_DIM_X / 2, 0.5f, Config.CELL_DIM_Z / 2);

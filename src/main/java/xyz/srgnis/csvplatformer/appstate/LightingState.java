@@ -1,4 +1,4 @@
-package xyz.srgnis.appstate;
+package xyz.srgnis.csvplatformer.appstate;
 
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;

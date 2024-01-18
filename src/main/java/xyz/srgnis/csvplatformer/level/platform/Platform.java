@@ -1,4 +1,4 @@
-package xyz.srgnis.level.platform;
+package xyz.srgnis.csvplatformer.level.platform;
 
 import com.jme3.bullet.collision.shapes.CollisionShape;
 import com.jme3.bullet.collision.shapes.MeshCollisionShape;

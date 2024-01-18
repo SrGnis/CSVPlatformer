@@ -1,10 +1,10 @@
-package xyz.srgnis.physicstrigger;
+package xyz.srgnis.csvplatformer.lib.physicstrigger;
 
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.collision.PhysicsCollisionEvent;
 import com.jme3.bullet.collision.PhysicsCollisionObject;
 import com.jme3.bullet.objects.PhysicsBody;
-import xyz.srgnis.CSVPlatformer;
+import xyz.srgnis.csvplatformer.CSVPlatformer;
 
 public class RestartPlaneTouched extends PhysicsTrigger {
     public RestartPlaneTouched(PhysicsBody triggerBody, PhysicsSpace physicsSpace) {

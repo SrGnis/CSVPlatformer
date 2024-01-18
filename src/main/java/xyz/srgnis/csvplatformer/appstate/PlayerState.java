@@ -1,4 +1,4 @@
-package xyz.srgnis.appstate;
+package xyz.srgnis.csvplatformer.appstate;
 
 import com.jme3.app.Application;
 import com.jme3.app.state.BaseAppState;
@@ -8,9 +8,9 @@ import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.KeyTrigger;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
-import xyz.srgnis.CSVPlatformer;
-import xyz.srgnis.config.Config;
-import xyz.srgnis.player.Player;
+import xyz.srgnis.csvplatformer.CSVPlatformer;
+import xyz.srgnis.csvplatformer.config.Config;
+import xyz.srgnis.csvplatformer.player.Player;
 
 public class PlayerState extends BaseAppState implements ActionListener {
 

@@ -1,12 +1,12 @@
-package xyz.srgnis.player;
+package xyz.srgnis.csvplatformer.player;
 
 import com.jme3.bullet.collision.shapes.SphereCollisionShape;
 import com.jme3.bullet.control.CharacterControl;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.shape.Sphere;
-import xyz.srgnis.Materials;
-import xyz.srgnis.config.Config;
+import xyz.srgnis.csvplatformer.Materials;
+import xyz.srgnis.csvplatformer.config.Config;
 
 public class Player {
     private Geometry playerGeometry;

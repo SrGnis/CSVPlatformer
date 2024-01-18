@@ -16,7 +16,7 @@ java {
 
 ext.jmonkeyengineVersion = '3.6.1-stable'
 
-mainClassName = 'xyz.srgnis.CSVPlatformer'
+mainClassName = 'xyz.srgnis.csvplatformer.CSVPlatformer'
 if (!hasProperty('mainClass')) {
     ext.mainClass = mainClassName
 }
