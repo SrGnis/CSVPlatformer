@@ -17,17 +17,18 @@ public class RandLoader implements LevelLoader {
 
     @Override
     public Level loadLevel(@Nullable String seed) {
-        int max = (int) (Config.INIT_PLATFORM_Y + Config.INIT_PLATFORM_Y / 2);
-        int min = (int) (Config.INIT_PLATFORM_Y - Config.INIT_PLATFORM_Y / 2);
+        int max = (int) (Config.INIT_PLATFORM_Y + Config.INIT_PLATFORM_Y / 3);
+        int min = (int) (Config.INIT_PLATFORM_Y - Config.INIT_PLATFORM_Y / 3);
 
         Level level = new Level(Config.RAND_LEVEL_WIDTH, app);
 
-        for (int w = 0; w < Config.RAND_LEVEL_WIDTH; w++) {
-            for (int l = 0; l < Config.RAND_LEVEL_LENGTH; l++) {
+        for (int col = 0; col < Config.RAND_LEVEL_WIDTH; col++) {
+            for (int row = 0; row < Config.RAND_LEVEL_LENGTH; row++) {
                 int height = FastMath.nextRandomInt(min, max);
-                level.addPlatform(new SimplePlatform(w, l, height));
+                level.addPlatform(new SimplePlatform(col, row, height));
             }
         }
+        level.createEndPlatform(Config.RAND_LEVEL_WIDTH, Config.RAND_LEVEL_LENGTH);
         return level;
     }
 }

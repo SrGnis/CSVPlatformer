@@ -90,7 +90,7 @@ public class PlayerState extends BaseAppState implements ActionListener {
         if (jumpTime > 0) {
             player.getPlayerControl().jump();
             jumpTime += tpf;
-            jumpTime = jumpTime > 0.25 ? 0 : jumpTime;
+            jumpTime = jumpTime > Config.JUMP_TIME ? 0 : jumpTime;
         }
     }
 

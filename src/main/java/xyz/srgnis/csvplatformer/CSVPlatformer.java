@@ -1,13 +1,13 @@
 package xyz.srgnis.csvplatformer;
 
 import com.jme3.app.ChaseCameraAppState;
-import com.jme3.app.DebugKeysAppState;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.StatsAppState;
 import com.jme3.app.state.ConstantVerifierState;
 import com.jme3.audio.AudioListenerState;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.PhysicsSpace;
+import com.jme3.font.BitmapFont;
 import com.jme3.system.AppSettings;
 import xyz.srgnis.csvplatformer.appstate.LevelState;
 import xyz.srgnis.csvplatformer.appstate.LightingState;
@@ -28,7 +28,6 @@ public class CSVPlatformer extends SimpleApplication {
         super(
                 new StatsAppState(),
                 new AudioListenerState(),
-                new DebugKeysAppState(),
                 new ConstantVerifierState(),
                 new ChaseCameraAppState(), // TODO: extend/implement our own
                 new LightingState()
@@ -47,6 +46,10 @@ public class CSVPlatformer extends SimpleApplication {
 
     @Override
     public void simpleInitApp() {
+
+        setDisplayFps(false);
+        setDisplayStatView(false);
+
         //Load default Materials
         Materials.RED_MATERIAL = Utils.createLitMaterial(assetManager, 0.5f, 0, 0);
         Materials.GREEN_MATERIAL = Utils.createLitMaterial(assetManager, 0, 0.5f, 0);
@@ -83,5 +86,23 @@ public class CSVPlatformer extends SimpleApplication {
 
     public PhysicsSpace getPhysicsSpace() {
         return physicsSpace;
+    }
+
+    public BitmapFont getGuiFont() {
+        return guiFont;
+    }
+
+    ;
+
+    public void showMouse() {
+        ChaseCameraAppState chaseCameraAppState = stateManager.getState(ChaseCameraAppState.class);
+        chaseCameraAppState.setDragToRotate(true);
+        chaseCameraAppState.setEnabled(false);
+    }
+
+    public void hideMouse() {
+        ChaseCameraAppState chaseCameraAppState = stateManager.getState(ChaseCameraAppState.class);
+        chaseCameraAppState.setDragToRotate(false);
+        chaseCameraAppState.setEnabled(true);
     }
 }

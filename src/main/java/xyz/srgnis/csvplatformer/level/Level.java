@@ -10,6 +10,7 @@ import com.jme3.scene.Node;
 import com.jme3.scene.shape.Box;
 import xyz.srgnis.csvplatformer.CSVPlatformer;
 import xyz.srgnis.csvplatformer.Materials;
+import xyz.srgnis.csvplatformer.appstate.StopWatch;
 import xyz.srgnis.csvplatformer.config.Config;
 import xyz.srgnis.csvplatformer.level.platform.Platform;
 import xyz.srgnis.csvplatformer.level.platform.SimplePlatform;
@@ -19,12 +20,14 @@ import xyz.srgnis.csvplatformer.lib.physicstrigger.RestartPlaneTouched;
 import java.util.HashSet;
 
 public class Level {
+    private StopWatch stopWatch;
     private PhysicsSpace physicsSpace;
     private Node rootNode;
     private int columnNumber;
     private Platform initialPlatform;
     private HashSet<Platform> platforms = new HashSet<>();
     private PhysicsTrigger restartPlane;
+    private Platform endPlatform;
 
 
     public Level(int columnNumber, CSVPlatformer app) {
@@ -34,6 +37,9 @@ public class Level {
 
         createRestartPlane();
         createInitialPlatform(this.columnNumber);
+
+        stopWatch = new StopWatch(app);
+        stopWatch.setStartX(Config.INIT_PLATFORM_DEEP);
     }
 
     private void createRestartPlane() {
@@ -59,6 +65,25 @@ public class Level {
         );
 
         setInitialPlatform(platform);
+    }
+
+    public void createEndPlatform(int colNum, int rowNum) {
+        System.out.println(colNum);
+        System.out.println(rowNum);
+        float width = colNum * Config.CELL_DIM_Z;
+
+        Platform platform = new SimplePlatform(
+                new Box(Config.INIT_PLATFORM_DEEP / 2, 0.5f, width / 2),
+                Materials.GREEN_MATERIAL,
+                new Vector3f(
+                        Config.INIT_PLATFORM_DEEP + rowNum * Config.CELL_DIM_X + Config.INIT_PLATFORM_DEEP * 0.5f,
+                        Config.INIT_PLATFORM_Y,
+                        width / 2
+                )
+        );
+
+        setEndPlatform(platform);
+        stopWatch.setEndX(Config.INIT_PLATFORM_DEEP + rowNum * Config.CELL_DIM_X);
     }
 
     public void addPlatform(Platform platform) {
@@ -91,6 +116,14 @@ public class Level {
         this.initialPlatform = platform;
     }
 
+    public void setEndPlatform(Platform platform) {
+        if (this.endPlatform != null) {
+            removePlatform(this.endPlatform);
+        }
+        addPlatform(platform, false);
+        this.endPlatform = platform;
+    }
+
     public void movePlayerToStart() {
         if (initialPlatform != null) {
             Vector3f startPos = initialPlatform.getGeometry().getLocalTranslation();
@@ -100,9 +133,15 @@ public class Level {
     }
 
     public void destroy() {
+        stopWatch.destroy();
+
         removePlatform(initialPlatform);
         initialPlatform.destroy();
         initialPlatform = null;
+
+        removePlatform(endPlatform);
+        endPlatform.destroy();
+        endPlatform = null;
 
         restartPlane.destroy();
         restartPlane = null;

@@ -8,8 +8,12 @@ import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.KeyTrigger;
 import xyz.srgnis.csvplatformer.CSVPlatformer;
 import xyz.srgnis.csvplatformer.level.Level;
+import xyz.srgnis.csvplatformer.level.loader.CSVLoader;
 import xyz.srgnis.csvplatformer.level.loader.LevelLoader;
 import xyz.srgnis.csvplatformer.level.loader.RandLoader;
+
+import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class LevelState extends BaseAppState implements ActionListener {
 
@@ -44,7 +48,8 @@ public class LevelState extends BaseAppState implements ActionListener {
     private void configureInput() {
         InputManager inputManager = this.getApplication().getInputManager();
         inputManager.addMapping("random_restart", new KeyTrigger(KeyInput.KEY_R));
-        inputManager.addListener(this, "random_restart");
+        inputManager.addMapping("load_file", new KeyTrigger(KeyInput.KEY_O));
+        inputManager.addListener(this, "random_restart", "load_file");
     }
 
     private void loadLevel(String source, LevelLoader levelLoader) {
@@ -59,6 +64,18 @@ public class LevelState extends BaseAppState implements ActionListener {
     public void onAction(String name, boolean isPressed, float tpf) {
         if (name == "random_restart" && isPressed) {
             loadLevel(null, new RandLoader(CSVPlatformer.INSTANCE));
+        }
+        if (name == "load_file" && isPressed) {
+            JFileChooser chooser = new JFileChooser();
+            FileNameExtensionFilter filter = new FileNameExtensionFilter(
+                    "CSV files", "csv");
+            chooser.setFileFilter(filter);
+            CSVPlatformer.INSTANCE.showMouse();
+            int returnVal = chooser.showOpenDialog(null);
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
+                loadLevel(chooser.getSelectedFile().getAbsolutePath(), new CSVLoader(CSVPlatformer.INSTANCE));
+            }
+            CSVPlatformer.INSTANCE.hideMouse();
         }
     }
 

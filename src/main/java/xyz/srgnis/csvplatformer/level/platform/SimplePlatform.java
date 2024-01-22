@@ -12,7 +12,7 @@ public class SimplePlatform extends Platform {
 
     public SimplePlatform(int col, int row, float height) {
         this(new Vector3f(
-                (row * Config.CELL_DIM_X) + Config.CELL_DIM_X + Config.CELL_DIM_X / 2,
+                Config.INIT_PLATFORM_DEEP + (row * Config.CELL_DIM_X) + Config.CELL_DIM_X / 2,
                 height,
                 (col * Config.CELL_DIM_Z) + Config.CELL_DIM_Z / 2
         ));

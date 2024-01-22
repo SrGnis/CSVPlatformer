@@ -1,4 +1,4 @@
-package xyz.srgnis.physicstrigger;
+package xyz.srgnis.csvplatformer.lib.physicstrigger;
 
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.collision.PhysicsCollisionListener;
