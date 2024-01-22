@@ -1,6 +1,5 @@
 package xyz.srgnis.csvplatformer.level;
 
-import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.collision.shapes.PlaneCollisionShape;
 import com.jme3.bullet.objects.PhysicsBody;
 import com.jme3.bullet.objects.PhysicsRigidBody;
@@ -10,7 +9,6 @@ import com.jme3.scene.Node;
 import com.jme3.scene.shape.Box;
 import xyz.srgnis.csvplatformer.CSVPlatformer;
 import xyz.srgnis.csvplatformer.Materials;
-import xyz.srgnis.csvplatformer.appstate.StopWatch;
 import xyz.srgnis.csvplatformer.config.Config;
 import xyz.srgnis.csvplatformer.level.platform.Platform;
 import xyz.srgnis.csvplatformer.level.platform.SimplePlatform;
@@ -21,8 +19,7 @@ import java.util.HashSet;
 
 public class Level {
     private StopWatch stopWatch;
-    private PhysicsSpace physicsSpace;
-    private Node rootNode;
+    private Node rootNode; //TODO: Use own level node
     private int columnNumber;
     private Platform initialPlatform;
     private HashSet<Platform> platforms = new HashSet<>();
@@ -33,7 +30,6 @@ public class Level {
     public Level(int columnNumber, CSVPlatformer app) {
         this.columnNumber = columnNumber;
         this.rootNode = app.getRootNode();
-        this.physicsSpace = app.getPhysicsSpace();
 
         createRestartPlane();
         createInitialPlatform(this.columnNumber);
@@ -48,7 +44,7 @@ public class Level {
 
         PhysicsRigidBody restartPlane = new PhysicsRigidBody(shape, PhysicsBody.massForStatic);
 
-        this.restartPlane = new RestartPlaneTouched(restartPlane, physicsSpace);
+        this.restartPlane = new RestartPlaneTouched(restartPlane, CSVPlatformer.INSTANCE.getPhysicsSpace());
     }
 
     private void createInitialPlatform(int colNum) {
@@ -92,20 +88,16 @@ public class Level {
 
     public void addPlatform(Platform platform, boolean addToSet) {
         rootNode.attachChild(platform.getGeometry());
-        physicsSpace.add(platform.getRigidBodyControl());
+        CSVPlatformer.INSTANCE.getPhysicsSpace().add(platform.getRigidBodyControl());
         if (addToSet)
             platforms.add(platform);
     }
 
     public void removePlatform(Platform platform) {
         platform.getGeometry().removeFromParent();
-        physicsSpace.remove(platform.getRigidBodyControl());
+        CSVPlatformer.INSTANCE.getPhysicsSpace().remove(platform.getRigidBodyControl());
         if (platforms.contains(platform))
             platforms.remove(platform);
-    }
-
-    public Platform getInitialPlatform() {
-        return initialPlatform;
     }
 
     public void setInitialPlatform(Platform platform) {

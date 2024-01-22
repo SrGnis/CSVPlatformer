@@ -1,4 +1,4 @@
-package xyz.srgnis.csvplatformer.appstate;
+package xyz.srgnis.csvplatformer.level;
 
 import com.jme3.app.Application;
 import com.jme3.font.BitmapFont;

@@ -29,6 +29,7 @@ public class StopWatchControl extends AbstractControl {
             start();
         }
         if (run && location.getX() < startX) {
+            stop();
             restart();
         }
         if (run && location.getX() >= endX) {

@@ -2,12 +2,69 @@
 title: CSVPlatformer Structure
 ---
 classDiagram
-    class CSVPlatformer {
-        -Level level
-        -Player player
-        -setLevel(Level level)
-        -resetPlayer()
+    class LevelState {
+        - Level level
+        + onAction()
+        - configureInput()
+        + Level getLevel()
+        - loadLevel()
     }
+    class LightingState
+    class LightingState
+    class PlayerState {
+        - Player player
+        - boolean jumpRequested;
+        - boolean walkAway;
+        - boolean walkLeft;
+        - boolean walkRight;
+        - boolean walkToward;
+        - float jumpTime;
+        + onAction()
+        - configureInput()
+        + Player getPlayer()
+    }
+    class BulletAppState
+    class CSVPlatformer {
+        <<singleton>>
+        + CSVPlatformer INSTANCE
+        + getPlayer()
+        + getLevel()
+        + getPhysicsSpace()
+    }
+    class LevelLoader {
+        <<interface>>
+        +loadLevel(String source) Level
+    }
+    class CSVLoader
+    class RandLoader
+    class Level {
+        - Platform initialPlatform
+        - Platform endPlatform
+        - HashSet~Platform~ platforms
+        - PhysicsTrigger restartPlane
+        - createRestartPlane(int colNum)
+        - createInitialPlatform
+        + createEndPlatform(int colNum, int rowNum)
+        + addPlatform(Platform platform, boolean addToSet)
+        + removePlatform(Platform platform)
+        + setInitialPlatform(Platform platform)
+        + setEndPlatform(Platform platform)
+        + movePlayerToStart()
+        + destroy()
+    }
+    class Player {
+        -Geometry playerGeom
+        -playerControl
+        +moveTo(Vector3f position)
+    }
+    class Platform {
+        <<abstract>>
+        # Geometry geometry
+        # RigidBodyControl rigidBodyControl
+        + Geometry getGeometry()
+        + RigidBodyControl getRigidBodyControl()
+    }
+    class SimplePlatform
     class Config {
         +float INIT_PLATFORM_DEEP
         +float INIT_PLATFORM_Z
@@ -18,32 +75,46 @@ classDiagram
         +float JUMP_TIME
         +float GRAVITY
     }
-    class LevelLoader {
-        <<interface>>
-        +loadLevel(String source) Level
+    class StopWatch {
+        + start()
+        + stop()
+        + reset()
+        + setStartX()
+        + setEndX()
+        + destroy()
     }
-    class CSVLoader
-    class Level {
-        -Platform initialPlatform
-        -Platform[] platforms
-        +getStartPoint() Vector3f
+    class StopWatchControl {
+        - bool run
+        - long time
+        - float startX
+        - float endX
+        + start()
+        + stop()
+        + reset()
+        + setStartX()
+        + setEndX()
     }
-    class Player {
-        -Geometry playerGeom
-        -playerControl
-        +moveTo(Vector3f position)
-    }
-    class Platform {
+    class PhysicsTrigger {
         <<abstract>>
+        # PhysicsSpace physicsSpace;
+        # PhysicsBody triggerBody;
     }
-    class SimplePlatform
 
-    CSVPlatformer "1" *-- "1" Config
-    CSVPlatformer "1" *-- "1" LevelLoader
+    CSVPlatformer .. LevelState
+    CSVPlatformer .. PlayerState
+    CSVPlatformer .. LightingState
+    CSVPlatformer .. BulletAppState
+    CSVPlatformer .. ChaseCameraAppState
     LevelLoader <|.. CSVLoader
-    CSVPlatformer "1" *-- "1" Level
-    CSVPlatformer "1" *-- "1" Player
-    Level "1" *-- "1" Platform: initial platform
+    LevelLoader <|.. RandLoader
+    LevelState "1" *-- "1" Level
+    Level "2" *-- "1" Platform: initial/end platform
     Level "1" *-- "0..*" Platform: level platforms
     Platform <|.. SimplePlatform
+    Level -- StopWatch
+    StopWatch -- BitmapText
+    StopWatch -- StopWatchControl
+    Level -- PhysicsTrigger
+    PhysicsTrigger -- RestartPlaneTouched
+    PlayerState "1" *-- "1" Player
 

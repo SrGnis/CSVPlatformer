@@ -24,7 +24,7 @@ public class CSVPlatformer extends SimpleApplication {
 
     private PhysicsSpace physicsSpace;
 
-    public CSVPlatformer() {
+    private CSVPlatformer() {
         super(
                 new StatsAppState(),
                 new AudioListenerState(),
@@ -61,7 +61,7 @@ public class CSVPlatformer extends SimpleApplication {
 
         BulletAppState bulletAppState = new BulletAppState();
         getStateManager().attach(bulletAppState);
-        bulletAppState.setDebugEnabled(true); // for debug visualization
+        //bulletAppState.setDebugEnabled(true); // for debug visualization
         physicsSpace = bulletAppState.getPhysicsSpace();
         stateManager.attach(new PlayerState());
         stateManager.attach(new LevelState());
