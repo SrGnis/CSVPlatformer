@@ -108,13 +108,13 @@ classDiagram
     LevelLoader <|.. CSVLoader
     LevelLoader <|.. RandLoader
     LevelState "1" *-- "1" Level
-    Level "2" *-- "1" Platform: initial/end platform
+    Level "1" *-- "2" Platform: initial/end platform
     Level "1" *-- "0..*" Platform: level platforms
     Platform <|.. SimplePlatform
-    Level -- StopWatch
-    StopWatch -- BitmapText
-    StopWatch -- StopWatchControl
-    Level -- PhysicsTrigger
-    PhysicsTrigger -- RestartPlaneTouched
+    Level "1" *-- "1" StopWatch
+    StopWatch "1" *-- "1" BitmapText
+    StopWatch "1" *-- "1" StopWatchControl
+    Level "1" *-- "1" PhysicsTrigger
+    PhysicsTrigger <|-- RestartPlaneTouched
     PlayerState "1" *-- "1" Player
 
