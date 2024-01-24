@@ -75,7 +75,7 @@ public class PlayerState extends BaseAppState implements ActionListener {
         }
         direction.normalizeLocal();
 
-        Vector3f walkOffset = direction.mult(Config.MOV_SPEED * tpf);
+        Vector3f walkOffset = direction.mult(Config.MOV_SPEED);
 
 
         //TODO: this should be in Player?

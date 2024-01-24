@@ -5,7 +5,7 @@ public class Config {
     public static final float INIT_PLATFORM_Y = 100f;//100
     public static final float CELL_DIM_X = 10f;//10
     public static final float CELL_DIM_Z = 10f;//10
-    public static final float MOV_SPEED = 20f;//20
+    public static final float MOV_SPEED = 0.35f;//0.35
     public static final float JUMP_SPEED = 20f;//20
     public static final float JUMP_TIME = 0.30f;//0.25
     public static final float GRAVITY = 60f;//60
