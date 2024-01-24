@@ -5,6 +5,7 @@ import com.jme3.app.SimpleApplication;
 import com.jme3.app.StatsAppState;
 import com.jme3.app.state.ConstantVerifierState;
 import com.jme3.audio.AudioListenerState;
+import com.jme3.audio.AudioNode;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.font.BitmapFont;
@@ -50,9 +51,23 @@ public class CSVPlatformer extends SimpleApplication {
         setDisplayFps(false);
         setDisplayStatView(false);
 
-        //Load default Materials
+        //Load default Materials TODO: do this in the Materials Class
         Materials.RED_MATERIAL = Utils.createLitMaterial(assetManager, 0.5f, 0, 0);
         Materials.GREEN_MATERIAL = Utils.createLitMaterial(assetManager, 0, 0.5f, 0);
+
+        //Load default Sounds TODO: do this in the Sounds class
+        Sounds.WIND = new AudioNode(assetManager, "Sounds/Ambient/background_wind.ogg");
+        Sounds.WIND.setPositional(false);
+        Sounds.WIND.setDirectional(false);
+        Sounds.WIND.setLooping(true);
+
+        Sounds.JUMP = new AudioNode(assetManager, "Sounds/Effects/jump.ogg");
+        Sounds.JUMP.setPositional(false);
+        Sounds.JUMP.setDirectional(false);
+
+        Sounds.LAND = new AudioNode(assetManager, "Sounds/Effects/land.ogg");
+        Sounds.LAND.setPositional(false);
+        Sounds.LAND.setDirectional(false);
 
         //Initial Camera setup TODO: this should be done in the appState
         ChaseCameraAppState chaseCameraAppState = stateManager.getState(ChaseCameraAppState.class);
@@ -66,6 +81,7 @@ public class CSVPlatformer extends SimpleApplication {
         stateManager.attach(new PlayerState());
         stateManager.attach(new LevelState());
 
+        Sounds.WIND.play();
     }
 
     public Player getPlayer() {
