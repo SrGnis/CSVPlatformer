@@ -91,5 +91,7 @@ or
 
 [Check the structure UML](/docs/uml/structure.mmd)
 
+## ASSETS
 
+Check the different assets used and their licenses [here](/ASSETS_LICENSE.md)
 
