@@ -2,13 +2,16 @@ package xyz.srgnis.csvplatformer.appstate;
 
 import com.jme3.app.Application;
 import com.jme3.app.state.BaseAppState;
+import com.jme3.bullet.collision.PhysicsCollisionObject;
 import com.jme3.input.InputManager;
 import com.jme3.input.KeyInput;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.KeyTrigger;
+import com.jme3.math.FastMath;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
 import xyz.srgnis.csvplatformer.CSVPlatformer;
+import xyz.srgnis.csvplatformer.Sounds;
 import xyz.srgnis.csvplatformer.config.Config;
 import xyz.srgnis.csvplatformer.player.Player;
 
@@ -28,7 +31,30 @@ public class PlayerState extends BaseAppState implements ActionListener {
         player = new Player();
 
         configureInput();
+
+        //TODO: rewrite this
+        CSVPlatformer.INSTANCE.getPhysicsSpace().addCollisionListener(event -> {
+            PhysicsCollisionObject a = event.getObjectA();
+            PhysicsCollisionObject b = event.getObjectB();
+            PhysicsCollisionObject playerObject = player.getPlayerControl().getCharacter();
+
+
+            Vector3f lv = new Vector3f();
+            player.getPlayerControl().getCharacter().getLinearVelocity(lv);
+
+            boolean isPlayer = playerObject.equals(a) || playerObject.equals(b);
+            boolean negativeY = lv.getY() < -10;
+            boolean fallback = lv.getY() == 0 && !player.getPlayerControl().onGround();
+
+            System.out.println(lv + " " + player.getPlayerControl().onGround());
+
+            if (isPlayer && (negativeY || fallback)) {
+                System.out.println("land" + FastMath.nextRandomInt());
+                Sounds.LAND.play();
+            }
+        });
     }
+
 
     @Override
     protected void cleanup(Application app) {
@@ -75,7 +101,7 @@ public class PlayerState extends BaseAppState implements ActionListener {
         }
         direction.normalizeLocal();
 
-        Vector3f walkOffset = direction.mult(Config.MOV_SPEED * tpf);
+        Vector3f walkOffset = direction.mult(Config.MOV_SPEED);
 
 
         //TODO: this should be in Player?
@@ -84,6 +110,7 @@ public class PlayerState extends BaseAppState implements ActionListener {
         // Decide whether to start jumping.
         if (jumpRequested && player.getPlayerControl().onGround() && jumpTime == 0) {
             jumpTime = tpf;
+            Sounds.JUMP.play();
         }
 
         // FIXME: in low fps the jump is shorter?
