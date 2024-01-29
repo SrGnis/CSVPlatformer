@@ -4,7 +4,6 @@ import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.collision.PhysicsCollisionEvent;
 import com.jme3.bullet.collision.PhysicsCollisionObject;
 import com.jme3.bullet.objects.PhysicsBody;
-import com.jme3.bullet.objects.PhysicsCharacter;
 import xyz.srgnis.csvplatformer.CSVPlatformer;
 
 public class RestartPlaneTouched extends PhysicsTrigger {
@@ -16,7 +15,7 @@ public class RestartPlaneTouched extends PhysicsTrigger {
     public void collision(PhysicsCollisionEvent event) {
         PhysicsCollisionObject a = event.getObjectA();
         PhysicsCollisionObject b = event.getObjectB();
-        boolean isPlayer = a instanceof PhysicsCharacter;
+        boolean isPlayer = a.equals(CSVPlatformer.INSTANCE.getPlayer().getPlayerControl().getRigidBody());
         boolean isRestartPLane = b.equals(triggerBody);
 
         if (isRestartPLane && isPlayer)

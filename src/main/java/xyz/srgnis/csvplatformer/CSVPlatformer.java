@@ -9,10 +9,12 @@ import com.jme3.audio.AudioNode;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.font.BitmapFont;
+import com.jme3.math.Vector3f;
 import com.jme3.system.AppSettings;
 import xyz.srgnis.csvplatformer.appstate.LevelState;
 import xyz.srgnis.csvplatformer.appstate.LightingState;
 import xyz.srgnis.csvplatformer.appstate.PlayerState;
+import xyz.srgnis.csvplatformer.config.Config;
 import xyz.srgnis.csvplatformer.level.Level;
 import xyz.srgnis.csvplatformer.player.Player;
 
@@ -76,8 +78,10 @@ public class CSVPlatformer extends SimpleApplication {
 
         BulletAppState bulletAppState = new BulletAppState();
         getStateManager().attach(bulletAppState);
-        //bulletAppState.setDebugEnabled(true); // for debug visualization
+        bulletAppState.setDebugEnabled(true); // for debug visualization
         physicsSpace = bulletAppState.getPhysicsSpace();
+        physicsSpace.setGravity(Vector3f.UNIT_Y.mult(-1 * Config.GRAVITY_FORCE));
+
         stateManager.attach(new PlayerState());
         stateManager.attach(new LevelState());
 
@@ -89,7 +93,6 @@ public class CSVPlatformer extends SimpleApplication {
     }
 
     public void setPlayer(Player player) {
-        rootNode.attachChild(player.getPlayerGeometry());
         physicsSpace.add(player.getPlayerControl());
 
         ChaseCameraAppState chaseCameraAppState = stateManager.getState(ChaseCameraAppState.class);

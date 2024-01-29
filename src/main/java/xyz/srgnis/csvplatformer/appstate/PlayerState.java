@@ -2,12 +2,12 @@ package xyz.srgnis.csvplatformer.appstate;
 
 import com.jme3.app.Application;
 import com.jme3.app.state.BaseAppState;
-import com.jme3.bullet.collision.PhysicsCollisionObject;
+import com.jme3.bullet.PhysicsSpace;
+import com.jme3.bullet.PhysicsTickListener;
 import com.jme3.input.InputManager;
 import com.jme3.input.KeyInput;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.KeyTrigger;
-import com.jme3.math.FastMath;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
 import xyz.srgnis.csvplatformer.CSVPlatformer;
@@ -15,7 +15,7 @@ import xyz.srgnis.csvplatformer.Sounds;
 import xyz.srgnis.csvplatformer.config.Config;
 import xyz.srgnis.csvplatformer.player.Player;
 
-public class PlayerState extends BaseAppState implements ActionListener {
+public class PlayerState extends BaseAppState implements ActionListener, PhysicsTickListener {
 
     private static volatile boolean jumpRequested;
     private static volatile boolean walkAway;
@@ -23,36 +23,18 @@ public class PlayerState extends BaseAppState implements ActionListener {
     private static volatile boolean walkRight;
     private static volatile boolean walkToward;
     private Player player;
-    private float jumpTime;
+    private boolean lastOnGround;
+    private float lastJumpTime = -1;
+    private Vector3f lastVelocity;
 
 
     @Override
     protected void initialize(Application app) {
         player = new Player();
 
+        CSVPlatformer.INSTANCE.getPhysicsSpace().addTickListener(this);
+
         configureInput();
-
-        //TODO: rewrite this
-        CSVPlatformer.INSTANCE.getPhysicsSpace().addCollisionListener(event -> {
-            PhysicsCollisionObject a = event.getObjectA();
-            PhysicsCollisionObject b = event.getObjectB();
-            PhysicsCollisionObject playerObject = player.getPlayerControl().getCharacter();
-
-
-            Vector3f lv = new Vector3f();
-            player.getPlayerControl().getCharacter().getLinearVelocity(lv);
-
-            boolean isPlayer = playerObject.equals(a) || playerObject.equals(b);
-            boolean negativeY = lv.getY() < -10;
-            boolean fallback = lv.getY() == 0 && !player.getPlayerControl().onGround();
-
-            System.out.println(lv + " " + player.getPlayerControl().onGround());
-
-            if (isPlayer && (negativeY || fallback)) {
-                System.out.println("land" + FastMath.nextRandomInt());
-                Sounds.LAND.play();
-            }
-        });
     }
 
 
@@ -107,17 +89,15 @@ public class PlayerState extends BaseAppState implements ActionListener {
         //TODO: this should be in Player?
         player.getPlayerControl().setWalkDirection(walkOffset);
 
+        // We need to set a small cool-down for jumps, if not, multiple jumps can be invoked in fractions of second
+        // when jumping on ledges
+        if (lastJumpTime >= 0) lastJumpTime += tpf;
+        if (lastJumpTime >= 0.25f) lastJumpTime = -1;
         // Decide whether to start jumping.
-        if (jumpRequested && player.getPlayerControl().onGround() && jumpTime == 0) {
-            jumpTime = tpf;
-            Sounds.JUMP.play();
-        }
-
-        // FIXME: in low fps the jump is shorter?
-        if (jumpTime > 0) {
+        if (jumpRequested && player.getPlayerControl().isOnGround() && lastJumpTime < 0) {
             player.getPlayerControl().jump();
-            jumpTime += tpf;
-            jumpTime = jumpTime > Config.JUMP_TIME ? 0 : jumpTime;
+            Sounds.JUMP.play();
+            lastJumpTime = 0;
         }
     }
 
@@ -166,5 +146,19 @@ public class PlayerState extends BaseAppState implements ActionListener {
 
     public Player getPlayer() {
         return player;
+    }
+
+    @Override
+    public void prePhysicsTick(PhysicsSpace space, float timeStep) {
+        lastOnGround = player.getPlayerControl().isOnGround();
+        lastVelocity = player.getPlayerControl().getVelocity().clone();
+    }
+
+    @Override
+    public void physicsTick(PhysicsSpace space, float timeStep) {
+        if (player.getPlayerControl().isOnGround() && !lastOnGround && lastVelocity.getY() < -10) {
+            //System.out.println(lastVelocity + " " + player.getPlayerControl().getVelocity() );
+            Sounds.LAND.play();
+        }
     }
 }

@@ -24,7 +24,7 @@ public class StopWatchControl extends AbstractControl {
 
     @Override
     protected void controlUpdate(float tpf) {
-        Vector3f location = CSVPlatformer.INSTANCE.getPlayer().getPlayerControl().getPhysicsLocation();
+        Vector3f location = CSVPlatformer.INSTANCE.getPlayer().getPlayerControl().getRigidBody().getPhysicsLocation();
         if (!run && location.getX() >= startX) {
             start();
         }

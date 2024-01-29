@@ -22,6 +22,8 @@ public abstract class Platform {
         CollisionShape shape = new MeshCollisionShape(mesh);
         rigidBodyControl = new RigidBodyControl(shape, PhysicsBody.massForStatic);
         geometry.addControl(rigidBodyControl);
+
+        this.rigidBodyControl.setFriction(0); // to prevent the player walk on walls
     }
 
     public Geometry getGeometry() {
