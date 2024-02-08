@@ -71,6 +71,21 @@ public class CSVPlatformer extends SimpleApplication {
         Sounds.LAND.setPositional(false);
         Sounds.LAND.setDirectional(false);
 
+        Sounds.MONKE_JUMP_1 = new AudioNode(assetManager, "Sounds/Effects/monke_jump_1.ogg");
+        Sounds.MONKE_JUMP_1.setPositional(false);
+        Sounds.MONKE_JUMP_1.setDirectional(false);
+        Sounds.MONKE_JUMP_1.setVolume(0.5f);
+        Sounds.MONKE_JUMP_2 = new AudioNode(assetManager, "Sounds/Effects/monke_jump_2.ogg");
+        Sounds.MONKE_JUMP_2.setPositional(false);
+        Sounds.MONKE_JUMP_2.setDirectional(false);
+        Sounds.MONKE_JUMP_2.setVolume(0.5f);
+        Sounds.MONKE_JUMP_3 = new AudioNode(assetManager, "Sounds/Effects/monke_jump_3.ogg");
+        Sounds.MONKE_JUMP_3.setPositional(false);
+        Sounds.MONKE_JUMP_3.setDirectional(false);
+        Sounds.MONKE_JUMP_3.setVolume(0.5f);
+        Sounds.updateMonkeJumps();
+
+
         //Initial Camera setup TODO: this should be done in the appState
         ChaseCameraAppState chaseCameraAppState = stateManager.getState(ChaseCameraAppState.class);
         chaseCameraAppState.setDragToRotate(false);
@@ -78,7 +93,7 @@ public class CSVPlatformer extends SimpleApplication {
 
         BulletAppState bulletAppState = new BulletAppState();
         getStateManager().attach(bulletAppState);
-        bulletAppState.setDebugEnabled(true); // for debug visualization
+        //bulletAppState.setDebugEnabled(true); // for debug visualization
         physicsSpace = bulletAppState.getPhysicsSpace();
         physicsSpace.setGravity(Vector3f.UNIT_Y.mult(-1 * Config.GRAVITY_FORCE));
 
@@ -96,7 +111,7 @@ public class CSVPlatformer extends SimpleApplication {
         physicsSpace.add(player.getPlayerControl());
 
         ChaseCameraAppState chaseCameraAppState = stateManager.getState(ChaseCameraAppState.class);
-        chaseCameraAppState.setTarget(player.getPlayerGeometry());
+        chaseCameraAppState.setTarget(player.getPlayerSpatial());
     }
 
     public Level getLevel() {

@@ -88,15 +88,28 @@ public class PlayerState extends BaseAppState implements ActionListener, Physics
 
         //TODO: this should be in Player?
         player.getPlayerControl().setWalkDirection(walkOffset);
+        if (!walkOffset.equals(Vector3f.ZERO) && player.getPlayerControl().isOnGround()) {
+            player.getPlayerControl().setViewDirection(walkOffset);
+        }
+
+        if (player.getPlayerControl().isOnGround()) {
+            if (walkOffset.equals(Vector3f.ZERO)) {
+                player.setAnimation("Idle");
+            } else {
+                player.setAnimation("Run");
+            }
+        } else {
+            player.setAnimation("Jumping");
+        }
 
         // We need to set a small cool-down for jumps, if not, multiple jumps can be invoked in fractions of second
         // when jumping on ledges
         if (lastJumpTime >= 0) lastJumpTime += tpf;
-        if (lastJumpTime >= 0.25f) lastJumpTime = -1;
+        if (lastJumpTime >= Config.JUMP_COOLDOWN) lastJumpTime = -1;
         // Decide whether to start jumping.
         if (jumpRequested && player.getPlayerControl().isOnGround() && lastJumpTime < 0) {
             player.getPlayerControl().jump();
-            Sounds.JUMP.play();
+            Sounds.rand_monke_jump().play();
             lastJumpTime = 0;
         }
     }
@@ -159,6 +172,7 @@ public class PlayerState extends BaseAppState implements ActionListener, Physics
         if (player.getPlayerControl().isOnGround() && !lastOnGround && lastVelocity.getY() < -10) {
             //System.out.println(lastVelocity + " " + player.getPlayerControl().getVelocity() );
             Sounds.LAND.play();
+            player.setAnimation("JumpEnd");
         }
     }
 }

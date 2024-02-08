@@ -64,8 +64,6 @@ public class Level {
     }
 
     public void createEndPlatform(int colNum, int rowNum) {
-        System.out.println(colNum);
-        System.out.println(rowNum);
         float width = colNum * Config.CELL_DIM_Z;
 
         Platform platform = new SimplePlatform(

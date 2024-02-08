@@ -22,7 +22,7 @@ public class LightingState extends BaseAppState {
 
         scene.setShadowMode(RenderQueue.ShadowMode.CastAndReceive);
 
-        ColorRGBA ambientColor = new ColorRGBA(0.03f, 0.03f, 0.03f, 1f);
+        ColorRGBA ambientColor = new ColorRGBA(0.1f, 0.1f, 0.1f, 1f);
         AmbientLight ambient = new AmbientLight(ambientColor);
         scene.addLight(ambient);
         ambient.setName("ambient");
