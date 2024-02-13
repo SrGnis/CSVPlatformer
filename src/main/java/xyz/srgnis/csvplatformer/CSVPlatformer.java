@@ -38,12 +38,15 @@ public class CSVPlatformer extends SimpleApplication {
     }
 
     public static void main(String[] args) {
-        INSTANCE.setShowSettings(true); //Settings dialog not supported on mac
-
         AppSettings settings = new AppSettings(true);
+        settings.setFrequency(120);
+        settings.setVSync(true);
+        settings.setWidth(1024);
+        settings.setHeight(768);
         settings.setGammaCorrection(true);
-        INSTANCE.setSettings(settings);
 
+        INSTANCE.setSettings(settings);
+        INSTANCE.setShowSettings(true);
         INSTANCE.start();
     }
 
@@ -57,7 +60,7 @@ public class CSVPlatformer extends SimpleApplication {
         Materials.RED_MATERIAL = Utils.createLitMaterial(assetManager, 0.5f, 0, 0);
         Materials.GREEN_MATERIAL = Utils.createLitMaterial(assetManager, 0, 0.5f, 0);
 
-        //Load default Sounds TODO: do this in the Sounds class
+        //Load default Sounds TODO: do this in the Sounds class and do it with config files
         Sounds.WIND = new AudioNode(assetManager, "Sounds/Ambient/background_wind.ogg");
         Sounds.WIND.setPositional(false);
         Sounds.WIND.setDirectional(false);
