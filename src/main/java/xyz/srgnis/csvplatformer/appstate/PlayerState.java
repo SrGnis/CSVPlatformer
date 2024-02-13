@@ -8,6 +8,7 @@ import com.jme3.input.InputManager;
 import com.jme3.input.KeyInput;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.KeyTrigger;
+import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
 import xyz.srgnis.csvplatformer.CSVPlatformer;
@@ -83,17 +84,26 @@ public class PlayerState extends BaseAppState implements ActionListener, Physics
         }
         direction.normalizeLocal();
 
-        Vector3f walkOffset = direction.mult(Config.MOV_SPEED);
+        /*TODO: we should use the walk direction but, we can set it to 0,0,0 and this causes problems with the interpolation
+        so as a temporal measure whe use the view direction but we need to use a local variable to store it or something*/
+        // When we implement movement by speed this problem will dissapear
+        Quaternion currentDir = new Quaternion().lookAt(player.getPlayerControl().getViewDirection(new Vector3f()), Vector3f.UNIT_Y);
+        Quaternion desiredDir = new Quaternion().lookAt(direction, Vector3f.UNIT_Y);
 
+        currentDir.nlerp(desiredDir, .15f);
 
+        Vector3f result = currentDir.mult(Vector3f.UNIT_Z);
         //TODO: this should be in Player?
-        player.getPlayerControl().setWalkDirection(walkOffset);
-        if (!walkOffset.equals(Vector3f.ZERO) && player.getPlayerControl().isOnGround()) {
-            player.getPlayerControl().setViewDirection(walkOffset);
+
+        if (!direction.equals(Vector3f.ZERO)) {
+            player.getPlayerControl().setWalkDirection(result.mult(Config.MOV_SPEED));
+            player.getPlayerControl().setViewDirection(result);
+        } else {
+            player.getPlayerControl().setWalkDirection(Vector3f.ZERO);
         }
 
         if (player.getPlayerControl().isOnGround()) {
-            if (walkOffset.equals(Vector3f.ZERO)) {
+            if (direction.equals(Vector3f.ZERO)) {
                 player.setAnimation("Idle");
             } else {
                 player.setAnimation("Run");
